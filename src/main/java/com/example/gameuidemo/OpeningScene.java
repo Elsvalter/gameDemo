@@ -47,11 +47,11 @@ public class OpeningScene {
         grid.add(hBoxForButton, 1, 7);
 
         matchingGameButton.setOnAction(event -> {
-            MatchingGameScene matchingGameScene = new MatchingGameScene();
+            MatchingGameIntroScene matchingGameIntroScene = new MatchingGameIntroScene();
             Window window = scene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;
-                stage.setScene(matchingGameScene.getGameScene());
+                stage.setScene(matchingGameIntroScene.getMatchingIntroScene());
             }
         });
     }
