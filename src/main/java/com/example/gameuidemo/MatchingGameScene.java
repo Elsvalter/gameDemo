@@ -25,7 +25,8 @@ public class MatchingGameScene {
     private List<Label> colorLabels;
     private TextField userAnswerField;
 
-    private Text answerFeedback = new Text();
+    private Text answerFeedback;
+    private int roundsLeftToPlay;
 
 
     public MatchingGameScene(){
@@ -37,8 +38,9 @@ public class MatchingGameScene {
         }
         matchingGameLabel();
         newUserAnswerField();
-        displayRandomColorNames();
-        matchingGridPane.add(answerFeedback, 1, 7);
+        answerFeedback = new Text();
+        roundsLeftToPlay = getRoundsFromDifficulty();
+        playRound();
 
     }
     private void matchingGameLabel(){
@@ -46,42 +48,48 @@ public class MatchingGameScene {
         matchingGameLabel2.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
         matchingGridPane.add(matchingGameLabel2, 0, 0, 2 , 1);
     }
+    private void playRound(){
+        if (roundsLeftToPlay > 0){
+            displayRandomColorNames();
+            roundsLeftToPlay--;
+        }
+    }
 
     private void displayRandomColorNames(){
         ColorsAndColorNames colorsAndColorNames = new ColorsAndColorNames();
-        int rounds = getRoundsFromDifficulty();
+        randomColors = colorsAndColorNames.getRandomColors();
+        randomColorNames = colorsAndColorNames.getRandomColorNames();
 
-            randomColorNames = colorsAndColorNames.getRandomColorNames();
-            randomColors = colorsAndColorNames.getRandomColors();
+        VBox vBox = new VBox(20);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().add(answerFeedback);
 
-            for (int x = 0; x < colorLabels.size(); x++) {
-                colorLabels.set(x, new Label());
-                colorLabels.get(x).setFont(Font.font(20));
-                colorLabels.get(x).setText(randomColorNames[x]);
-                colorLabels.get(x).setTextFill(randomColors[x]);
-            }
-            VBox vBox = new VBox(20);
-            vBox.setAlignment(Pos.CENTER);
-            vBox.getChildren().addAll(colorLabels);
-            matchingGridPane.add(vBox, 1, 3);
+        for (int x = 0; x < colorLabels.size(); x++) {
+            //colorLabels.set(x, new Label());
+            colorLabels.get(x).setFont(Font.font(20));
+            colorLabels.get(x).setText(randomColorNames[x]);
+            colorLabels.get(x).setTextFill(randomColors[x]);
+            vBox.getChildren().add(colorLabels.get(x));
+        }
 
-            userAnswerField.setOnKeyPressed(keyEvent -> {
-                if (keyEvent.getCode() == KeyCode.ENTER){
-                    String userAnswer = userAnswerField.getText();
-                    int index = colorLabels.indexOf(userAnswer);
-                    if (index != -1){
-                        String colorName = String.valueOf(colorLabels.get(index));
-                        Color color = colorsAndColorNames.getColorByName(colorName);
-                        if (colorsAndColorNames.checkIfColorAndColorNameMatch(colorName, color)){
-                            answerFeedback.setText("Õige vastus");
-                        } else {
-                            answerFeedback.setText("Vale vastus");
-                        }
-                    }
+
+        userAnswerField.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ENTER){
+                String userAnswer = userAnswerField.getText().toLowerCase();
+                String correctColorName = randomColorNames[colorsAndColorNames.getCorrectAnswerIndex()].toLowerCase();
+                if (userAnswer.equals(correctColorName)) {
+                    answerFeedback.setText("Õige vastus");
+                } else {
+                    answerFeedback.setText("Vale vastus. õige indeks " + colorsAndColorNames.getCorrectAnswerIndex());
                 }
-            });
+                userAnswerField.clear();
+                playRound();
 
+            }
+        });
+        matchingGridPane.add(vBox, 1, 3);
     }
+
 
     private int getRoundsFromDifficulty(){
         String difficulty = DifficultyCurrentState.getDifficultyLevel();

@@ -11,35 +11,49 @@ public class ColorsAndColorNames {
     private List<String> colorNames;
     private List<Color> colors;
     private Random random;
+    private int correctAnswerIndex;
+    private String[] randomColorNames;
 
     public ColorsAndColorNames() {
         colorNames = List.of(new String[]{"Punane", "Sinine", "Roheline", "Kollane", "Oranž", "Lilla", "Roosa", "Pruun", "Must"});
         colors = List.of(new Color[]{Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.PURPLE, Color.PINK, Color.BROWN, Color.BLACK});
         random = new Random();
+        setCorrectAnswerIndex();
+        setRandomColorNames();
 
     }
 
 
-    public String[] getRandomColorNames() {
+    public void setRandomColorNames() {
         String[] randomWords = new String[4];
+        randomWords[correctAnswerIndex] = colorNames.get(random.nextInt(colorNames.size()));
+
         for (int i = 0; i < randomWords.length; i++) {
-            int index = random.nextInt(colorNames.size());
-            randomWords[i] = colorNames.get(index);
+            if (i != correctAnswerIndex) {
+                randomWords[i] = colorNames.get(random.nextInt(colorNames.size()));
+            }
         }
-        return randomWords;
+        randomColorNames = randomWords;
+    }
+
+    public String[] getRandomColorNames() {
+        return randomColorNames;
     }
 
     public Color[] getRandomColors() {
         Color[] randomColors = new Color[4];
+        randomColors[correctAnswerIndex] = getColorByName(randomColorNames[correctAnswerIndex]);
+
         for (int i = 0; i < randomColors.length; i++) {
-            int index = random.nextInt(colors.size());
-            randomColors[i] = colors.get(index);
+            if (i != correctAnswerIndex) {
+                randomColors[i] = colors.get(random.nextInt(colors.size()));
+            }
         }
         return randomColors;
     }
 
     public boolean checkIfColorAndColorNameMatch(String colorName, Color color) {
-        int colorIndex = colors.indexOf(colorName);
+        int colorIndex = colors.indexOf(color);
         int colorNameIndex = colorNames.indexOf(colorName);
         if (colorNameIndex == colorIndex) {
             return true;
@@ -53,4 +67,11 @@ public class ColorsAndColorNames {
         } else return null;
     }
 
+    private void setCorrectAnswerIndex(){
+        correctAnswerIndex = random.nextInt(4);
+    }
+
+    public int getCorrectAnswerIndex() {
+        return correctAnswerIndex;
+    }
 }
