@@ -1,8 +1,5 @@
 package com.example.gameuidemo;
-
-import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
-
 import java.util.List;
 import java.util.Random;
 
@@ -50,14 +47,6 @@ public class ColorsAndColorNames {
             }
         }
         return randomColors;
-    }
-
-    public boolean checkIfColorAndColorNameMatch(String colorName, Color color) {
-        int colorIndex = colors.indexOf(color);
-        int colorNameIndex = colorNames.indexOf(colorName);
-        if (colorNameIndex == colorIndex) {
-            return true;
-        } else return false;
     }
 
     public Color getColorByName(String colorName) {

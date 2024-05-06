@@ -52,6 +52,8 @@ public class MatchingGameScene {
         if (roundsLeftToPlay > 0){
             displayRandomColorNames();
             roundsLeftToPlay--;
+        } else {
+
         }
     }
 
@@ -80,8 +82,9 @@ public class MatchingGameScene {
                 if (userAnswer.equals(correctColorName)) {
                     answerFeedback.setText("Õige vastus");
                 } else {
-                    answerFeedback.setText("Vale vastus. õige indeks " + colorsAndColorNames.getCorrectAnswerIndex());
+                    answerFeedback.setText("Vale vastus. Õige vastus: " + randomColorNames[colorsAndColorNames.getCorrectAnswerIndex()]);
                 }
+
                 userAnswerField.clear();
                 playRound();
 
