@@ -9,12 +9,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -26,10 +28,12 @@ public class MemoryGameScene {
     private Label memoryGameLabel;
     private GameButtons startButton;
     private Scene popUpScene;
+    private ColorsAndColorNames colorsAndNames;
 
     public MemoryGameScene() throws InterruptedException {
         memoryGridPane = new BaseGridPane();
         memoryScene = new Scene(memoryGridPane, 400, 350);
+        colorsAndNames = new ColorsAndColorNames();
         matchingGameLabel();
         newMemoryGameUserAnswerField();
         textBoxWithDifficulty();
@@ -70,13 +74,13 @@ public class MemoryGameScene {
         int timePeriod = -1; // hoiab endas ajaperioodi, kui kaua näidatakse kasutajale värve
         switch (difficulty) {
             case "Lihtne":
-                timePeriod = 30;
+                timePeriod = 6;
                 break;
             case "Keskmine":
-                timePeriod = 20;
+                timePeriod = 4;
                 break;
             case "Raske":
-                timePeriod = 10;
+                timePeriod = 2;
                 break;
             default: // kui raskusastmeks on null
                 System.exit(1); // TODO: null raskusastet ei tohiks saada sisestada
@@ -104,6 +108,7 @@ public class MemoryGameScene {
         // uue stseeni loomine ja selle esiletõstmine lavale
         GridPane popUpPane = new BaseGridPane();
         popUpScene = new Scene(popUpPane, 400, 350);
+        addColors(popUpPane);
 
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
@@ -119,11 +124,20 @@ public class MemoryGameScene {
 
         synchronized (this) {
             this.wait();
-
             timer.cancel();
-
             timer.purge();
-            showMemoryScene();
+            showMemoryScene(); // kui taimer lõpetab tiksub 0ni, siis kuvatakse eelmine stseen
+        }
+    }
+
+    private void addColors(GridPane popUpPane) {
+        Color[] colors = new Color[8];
+        System.arraycopy(colorsAndNames.getRandomColors(), 0, colors, 0, 4);
+        System.arraycopy(colorsAndNames.getRandomColors(), 0, colors, 4, 4);
+
+        int i = 0;
+        for (Color color : colors) {
+            popUpPane.add(new Rectangle(200, 30, color), 0, i++);
         }
     }
 
