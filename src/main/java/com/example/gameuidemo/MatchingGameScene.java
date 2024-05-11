@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +29,13 @@ public class MatchingGameScene {
 
     private Text answerFeedback;
     private int roundsLeftToPlay;
+    private GameTimer gameTimer;
 
 
     public MatchingGameScene(){
         matchingGridPane = new BaseGridPane();
         matchingScene = new Scene(matchingGridPane, 400, 350);
+        gameTimer = new GameTimer();
         colorLabels = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             colorLabels.add(new Label());
@@ -40,6 +44,7 @@ public class MatchingGameScene {
         newUserAnswerField();
         answerFeedback = new Text();
         roundsLeftToPlay = getRoundsFromDifficulty();
+        GameTimer.setStartTime();
         playRound();
 
     }
@@ -53,7 +58,14 @@ public class MatchingGameScene {
             displayRandomColorNames();
             roundsLeftToPlay--;
         } else {
-
+            GameTimer.setEndTime();
+            GameTimer.setTimePlayed();
+            EndScene endScene = new EndScene();
+            Window window = matchingScene.getWindow();
+            if (window instanceof Stage){
+                Stage stage = (Stage) window;
+                stage.setScene(endScene.getEndScene());
+            }
         }
     }
 
@@ -67,7 +79,6 @@ public class MatchingGameScene {
         vBox.getChildren().add(answerFeedback);
 
         for (int x = 0; x < colorLabels.size(); x++) {
-            //colorLabels.set(x, new Label());
             colorLabels.get(x).setFont(Font.font(20));
             colorLabels.get(x).setText(randomColorNames[x]);
             colorLabels.get(x).setTextFill(randomColors[x]);
