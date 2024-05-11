@@ -238,7 +238,7 @@ public class MemoryGameScene {
             Scene scene = openingScene.getOpeningScene();
             Window root = memoryScene.getWindow();
             if (window instanceof Stage) {
-                Stage stage = (Stage) window;
+                Stage stage = (Stage) root;
                 stage.setScene(scene);
             }
 
