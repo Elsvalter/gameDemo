@@ -63,4 +63,12 @@ public class ColorsAndColorNames {
     public int getCorrectAnswerIndex() {
         return correctAnswerIndex;
     }
+
+    public List<String> getColorNames() {
+        return colorNames;
+    }
+
+    public List<Color> getColors() {
+        return colors;
+    }
 }

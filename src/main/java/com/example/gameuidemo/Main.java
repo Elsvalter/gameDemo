@@ -17,7 +17,7 @@ public class Main extends Application {
         OpeningScene openingScene = new OpeningScene();
         Scene scene = openingScene.getOpeningScene();
 
-        stage.setTitle("Avaekraan");
+        stage.setTitle("Mälu treenimise mäng");
         stage.setScene(scene);
         stage.show();
     }
