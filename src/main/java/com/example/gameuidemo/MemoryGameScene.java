@@ -2,13 +2,17 @@ package com.example.gameuidemo;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 public class MemoryGameScene {
     private BaseGridPane memoryGridPane;
@@ -79,13 +83,24 @@ public class MemoryGameScene {
             @Override
             public void handle(ActionEvent actionEvent) {
                 // tekita taimer
-                System.out.println("taimer"); // TODO: eemaldada
+                System.out.println("taimer"); // TODO: eemaldada - timer teha
 
-                System.out.println("timePeriod = " + finalTimePeriod);
-                //showColors(timePeriod) // värvide näitamise ajaperiood sõltub raskustasemest
+                showColors(finalTimePeriod); // värvide näitamise ajaperiood sõltub raskustasemest
             }
         });
 
+    }
+
+    public void showColors(int timePeriod) {
+        FlowPane popUpPane = new FlowPane();
+        Scene popUpScene = new Scene(popUpPane, 400, 350);
+
+        Window window = memoryScene.getWindow();
+        if (window instanceof Stage){
+            Stage stage = (Stage) window;
+            stage.setScene(popUpScene);
+        }
+        System.out.println(timePeriod);
     }
 
 

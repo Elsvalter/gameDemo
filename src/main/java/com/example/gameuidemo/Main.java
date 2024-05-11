@@ -13,7 +13,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         OpeningScene openingScene = new OpeningScene();
         Scene scene = openingScene.getOpeningScene();
 
