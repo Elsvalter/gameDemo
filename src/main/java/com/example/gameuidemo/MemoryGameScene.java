@@ -1,5 +1,8 @@
 package com.example.gameuidemo;
 
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,16 +33,22 @@ public class MemoryGameScene {
     private Scene popUpScene;
     private ColorsAndColorNames colorsAndNames;
     private Color[] currentColors;
+    private int points;
 
     public MemoryGameScene() throws InterruptedException {
         memoryGridPane = new BaseGridPane();
-        memoryScene = new Scene(memoryGridPane, 600, 600, Color.SILVER);
+        memoryScene = new Scene(memoryGridPane, 600, 600, Color.BLUEVIOLET);
+
         colorsAndNames = new ColorsAndColorNames();
         currentColors = new Color[6];
+
+        points = 0;
+
         matchingGameLabel();
         newMemoryGameUserAnswerField();
         instructionsText();
         startGameButton();
+        pointsLabel();
 
     }
 
@@ -51,17 +60,18 @@ public class MemoryGameScene {
         memoryGridPane.add(submitButton, 1, 2);
 
         submitButton.setOnMouseClicked(mouseEvent -> {
-            String input = memoryGameUserAnswerField.getText();
+            String input = memoryGameUserAnswerField.getText().trim();
             String[] insertedColors = input.split(" ");
             System.out.println(Arrays.toString(insertedColors));
-            int points = 0;
             int i = 0;
             while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
                 i++;
-                System.out.println("point");
-                points++;
             }
-            memoryGameUserAnswerField.setText("Vastatud! Teenisite " + points + " punkti.");
+            if (i < 3) gameOverScene();
+
+            points += i;
+            memoryGameLabel.setText("Punktid: " + points);
+            memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
         });
 
     }
@@ -76,7 +86,7 @@ public class MemoryGameScene {
     // näitab ära useri valitud raskustaseme
     private void instructionsText() {
         // Kuvab kõik võimalikud värvid
-        Text info = new Text("Saadaval värvid:");
+        Text info = new Text("Saadaval värvid (värvide peale vajutades need kirjutatakse tekstivälja):");
         info.setFont(Font.font("Calibri", FontWeight.NORMAL, 15));
         memoryGridPane.add(info, 0, 3);
 
@@ -90,9 +100,13 @@ public class MemoryGameScene {
         for (int i = 0; i < colorNames.size(); i++) {
             String colorName = colorNames.get(i);
             Color color = colorList.get(i);
-            Text colorInfo = new Text(colorName);
+            Label colorInfo = new Label(colorName);
             colorInfo.setFont(Font.font("Calibri", FontWeight.NORMAL, 15));
-            colorInfo.setFill(color);
+            colorInfo.setTextFill(color);
+            colorInfo.setBackground(Background.fill(Color.GREY));
+            colorInfo.setOnMouseClicked(keyEvent -> {
+                memoryGameUserAnswerField.appendText(" " + colorName);
+            });
             hbox.getChildren().add(colorInfo);
         }
         memoryGridPane.add(hbox, 0, 4);
@@ -132,9 +146,12 @@ public class MemoryGameScene {
 
         }
 
+
+
         // näitab korraks värve - vastavalt valitud raskusastmele
         int finalTimePeriod = timePeriod;
         startButton.setOnAction(actionEvent -> {
+            memoryGameLabel.setText(""); // tühjendatakse tekstiväli
 
             // kirjutab stseni värvidega üle
             try {
@@ -144,6 +161,12 @@ public class MemoryGameScene {
             }
         });
 
+    }
+
+    private void pointsLabel() {
+        memoryGameLabel = new Label("Punktid: " + points);
+        memoryGameLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
+        memoryGridPane.add(memoryGameLabel, 1, 7);
     }
 
     public void showColors(int timePeriod) throws InterruptedException {
@@ -192,6 +215,10 @@ public class MemoryGameScene {
             Stage stage = (Stage) window;
             stage.setScene(memoryScene);
         }
+    }
+
+    public void gameOverScene() {
+        System.out.println("GAME OVER!!!!!!\n".repeat(10));
     }
 
 
