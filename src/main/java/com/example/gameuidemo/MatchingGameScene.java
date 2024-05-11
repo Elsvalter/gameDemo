@@ -29,13 +29,11 @@ public class MatchingGameScene {
 
     private Text answerFeedback;
     private int roundsLeftToPlay;
-    private GameTimer gameTimer;
 
 
     public MatchingGameScene(){
         matchingGridPane = new BaseGridPane();
         matchingScene = new Scene(matchingGridPane, 400, 350);
-        gameTimer = new GameTimer();
         colorLabels = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             colorLabels.add(new Label());
@@ -44,7 +42,6 @@ public class MatchingGameScene {
         newUserAnswerField();
         answerFeedback = new Text();
         roundsLeftToPlay = getRoundsFromDifficulty();
-        GameTimer.setStartTime();
         playRound();
 
     }
@@ -58,8 +55,6 @@ public class MatchingGameScene {
             displayRandomColorNames();
             roundsLeftToPlay--;
         } else {
-            GameTimer.setEndTime();
-            GameTimer.setTimePlayed();
             EndScene endScene = new EndScene();
             Window window = matchingScene.getWindow();
             if (window instanceof Stage){
