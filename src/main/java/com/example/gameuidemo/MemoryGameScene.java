@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -14,14 +15,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 public class MemoryGameScene {
     private BaseGridPane memoryGridPane;
     private Scene memoryScene;
     private TextField memoryGameUserAnswerField;
     private Label memoryGameLabel;
     private GameButtons startButton;
+    private Scene popUpScene;
 
-    public MemoryGameScene() {
+    public MemoryGameScene() throws InterruptedException {
         memoryGridPane = new BaseGridPane();
         memoryScene = new Scene(memoryGridPane, 400, 350);
         matchingGameLabel();
@@ -36,24 +42,26 @@ public class MemoryGameScene {
         memoryGridPane.add(memoryGameUserAnswerField, 0, 1);
 
     }
-    private void matchingGameLabel(){
+
+    private void matchingGameLabel() {
         memoryGameLabel = new Label("Mälumäng");
         memoryGameLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
         memoryGridPane.add(memoryGameLabel, 0, 0);
     }
 
     // näitab ära useri valitud raskustaseme
-    private void textBoxWithDifficulty(){
+    private void textBoxWithDifficulty() {
         String difficulty = DifficultyCurrentState.getDifficultyLevel();
-        Text difficultyText = new Text("Valitud raskustase: "+difficulty);
+        Text difficultyText = new Text("Valitud raskustase: " + difficulty);
         difficultyText.setFont(Font.font("Calibri", FontWeight.NORMAL, 15));
         memoryGridPane.add(difficultyText, 0, 3);
     }
+
     public Scene getMemoryScene() {
         return memoryScene;
     }
 
-    public void startGameButton() {
+    private void startGameButton() throws InterruptedException {
         startButton = new GameButtons("Näita värve", 130, 55, Color.BLACK);
         memoryGridPane.add(startButton, 0, 4);
 
@@ -79,29 +87,56 @@ public class MemoryGameScene {
         // näitab korraks värve - vastavalt valitud raskusastmele
         // nurka tekib taimer, mis näitab järelejäänud aega
         int finalTimePeriod = timePeriod;
-        startButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                // tekita taimer
-                System.out.println("taimer"); // TODO: eemaldada - timer teha
+        startButton.setOnAction(actionEvent -> {
 
+            // kirjutab stseni värvidega üle
+            try {
                 showColors(finalTimePeriod); // värvide näitamise ajaperiood sõltub raskustasemest
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         });
 
     }
 
-    public void showColors(int timePeriod) {
-        FlowPane popUpPane = new FlowPane();
-        Scene popUpScene = new Scene(popUpPane, 400, 350);
+    public void showColors(int timePeriod) throws InterruptedException {
+
+        // uue stseeni loomine ja selle esiletõstmine lavale
+        GridPane popUpPane = new BaseGridPane();
+        popUpScene = new Scene(popUpPane, 400, 350);
 
         Window window = memoryScene.getWindow();
-        if (window instanceof Stage){
+        if (window instanceof Stage) {
             Stage stage = (Stage) window;
             stage.setScene(popUpScene);
         }
-        System.out.println(timePeriod);
+
+        // aja lugemine kuni 0ni
+        Timer timer = new Timer();
+        TimerTask task = new MemoryGameTimer(timePeriod, this);
+
+        timer.scheduleAtFixedRate(task, 0, 1000L);
+
+        synchronized (this) {
+            this.wait();
+
+            timer.cancel();
+
+            timer.purge();
+            showMemoryScene();
+        }
     }
+
+    public void showMemoryScene() {
+        // algse stseeni kuvamine
+        System.out.println("Stseeni vahetus");
+        Window window = popUpScene.getWindow();
+        if (window instanceof Stage) {
+            Stage stage = (Stage) window;
+            stage.setScene(memoryScene);
+        }
+    }
+
 
 
 }
