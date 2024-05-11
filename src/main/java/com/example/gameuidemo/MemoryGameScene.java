@@ -1,9 +1,5 @@
 package com.example.gameuidemo;
 
-import javafx.beans.binding.StringBinding;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,7 +25,7 @@ public class MemoryGameScene {
     private Scene memoryScene;
     private TextField memoryGameUserAnswerField;
     private Label memoryGameLabel;
-    private GameButtons startButton;
+    private GameButtons showButton;
     private Scene popUpScene;
     private ColorsAndColorNames colorsAndNames;
     private Color[] currentColors;
@@ -124,8 +120,8 @@ public class MemoryGameScene {
     }
 
     private void startGameButton() throws InterruptedException {
-        startButton = new GameButtons("Näita värve", 130, 55, Color.BLACK);
-        memoryGridPane.add(startButton, 0, 6);
+        showButton = new GameButtons("Näita värve", 130, 55, Color.BLACK);
+        memoryGridPane.add(showButton, 0, 6);
 
         // raskustaseme põhjal ajaperioodi arvutamine
         String difficulty = DifficultyCurrentState.getDifficultyLevel();
@@ -150,8 +146,7 @@ public class MemoryGameScene {
 
         // näitab korraks värve - vastavalt valitud raskusastmele
         int finalTimePeriod = timePeriod;
-        startButton.setOnAction(actionEvent -> {
-            memoryGameLabel.setText(""); // tühjendatakse tekstiväli
+        showButton.setOnAction(actionEvent -> {
 
             // kirjutab stseni värvidega üle
             try {
@@ -210,6 +205,9 @@ public class MemoryGameScene {
     public void showMemoryScene() { // algsele stseenile tagasi vahetamine
         // algse stseeni kuvamine
         System.out.println("Stseeni vahetus");
+
+        memoryGameUserAnswerField.setText("");
+
         Window window = popUpScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;
@@ -219,6 +217,7 @@ public class MemoryGameScene {
 
     public void gameOverScene() {
         System.out.println("GAME OVER!!!!!!\n".repeat(10));
+
     }
 
 
