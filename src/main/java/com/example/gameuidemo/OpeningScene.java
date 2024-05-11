@@ -65,7 +65,12 @@ public class OpeningScene {
         grid.add(hBoxForButton2, 1, 8);
 
         memoryGameButton.setOnAction(event -> {
-            MemoryGameScene memoryGameScene = new MemoryGameScene();
+            MemoryGameScene memoryGameScene = null;
+            try {
+                memoryGameScene = new MemoryGameScene();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             Window window = scene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;
