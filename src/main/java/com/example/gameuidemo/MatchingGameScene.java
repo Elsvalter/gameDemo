@@ -29,6 +29,7 @@ public class MatchingGameScene {
 
     private Text answerFeedback;
     private int roundsLeftToPlay;
+    private int points;
 
 
     public MatchingGameScene(){
@@ -38,6 +39,7 @@ public class MatchingGameScene {
         for (int i = 0; i < 4; i++) {
             colorLabels.add(new Label());
         }
+        points = 0;
         matchingGameLabel();
         newUserAnswerField();
         answerFeedback = new Text();
@@ -86,7 +88,8 @@ public class MatchingGameScene {
                 String userAnswer = userAnswerField.getText().toLowerCase();
                 String correctColorName = randomColorNames[colorsAndColorNames.getCorrectAnswerIndex()].toLowerCase();
                 if (userAnswer.equals(correctColorName)) {
-                    answerFeedback.setText("Õige vastus");
+                    points += 1;
+                    answerFeedback.setText("Õige vastus! Punkte kokku: " + points);
                 } else {
                     answerFeedback.setText("Vale vastus. Õige vastus: " + randomColorNames[colorsAndColorNames.getCorrectAnswerIndex()]);
                 }
