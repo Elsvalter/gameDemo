@@ -30,6 +30,7 @@ public class MemoryGameScene {
     private ColorsAndColorNames colorsAndNames;
     private Color[] currentColors;
     private int points;
+    private int roundsLeftToPlay;
 
     public MemoryGameScene() throws InterruptedException {
         memoryGridPane = new BaseGridPane();
@@ -39,13 +40,13 @@ public class MemoryGameScene {
         currentColors = new Color[6];
 
         points = 0;
+        roundsLeftToPlay = 4;
 
         matchingGameLabel();
         newMemoryGameUserAnswerField();
         instructionsText();
         startGameButton();
         pointsLabel();
-
     }
 
     private void newMemoryGameUserAnswerField() {
@@ -67,6 +68,8 @@ public class MemoryGameScene {
 
                 gameOverScene();
                 System.out.println("stseen vahetatud1");
+            } else if (roundsLeftToPlay-- <= 0) {
+                gameOverScene();
             }
 
             points += i;
@@ -101,7 +104,7 @@ public class MemoryGameScene {
             String colorName = colorNames.get(i);
             Color color = colorList.get(i);
             Label colorInfo = new Label(colorName);
-            colorInfo.setFont(Font.font("Calibri", FontWeight.NORMAL, 15));
+            colorInfo.setFont(Font.font("Calibri", FontWeight.NORMAL, 16));
             colorInfo.setTextFill(color);
             colorInfo.setBackground(Background.fill(Color.GREY));
             colorInfo.setOnMouseClicked(keyEvent -> {
@@ -123,7 +126,7 @@ public class MemoryGameScene {
         return memoryScene;
     }
 
-    private void startGameButton() throws InterruptedException {
+    private void startGameButton() {
         showButton = new GameButtons("Näita värve", 130, 55, Color.BLACK);
         memoryGridPane.add(showButton, 0, 6);
 
@@ -168,6 +171,9 @@ public class MemoryGameScene {
     }
 
     public void showColors(int timePeriod) throws InterruptedException {
+
+        // kui mängitakse esimest vooru, siis lisab memoryScenele juurde vastamise väljad
+
 
         // uue stseeni loomine ja selle esiletõstmine lavale
         GridPane popUpPane = new BaseGridPane();
