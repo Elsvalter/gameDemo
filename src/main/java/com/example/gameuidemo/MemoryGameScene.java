@@ -33,7 +33,7 @@ public class MemoryGameScene {
     private int roundsLeftToPlay; // kasutaja saab 4 vooru mängida
     private boolean answered; // näitab, kas kasutaja on antud voorus juba 1 korra värve pakkunud
 
-    public MemoryGameScene() throws InterruptedException {
+    public MemoryGameScene(String userName) throws InterruptedException {
         memoryGridPane = new BaseGridPane();
         memoryScene = new Scene(memoryGridPane, 600, 600);
 
@@ -44,13 +44,13 @@ public class MemoryGameScene {
         roundsLeftToPlay = 4;
 
         matchingGameLabel();
-        newMemoryGameUserAnswerField();
+        newMemoryGameUserAnswerField(userName);
         instructionsText();
         startGameButton();
         pointsLabel();
     }
 
-    private void newMemoryGameUserAnswerField() {
+    private void newMemoryGameUserAnswerField(String userName) {
         memoryGameUserAnswerField = new TextField();
         memoryGridPane.add(memoryGameUserAnswerField, 0, 2);
 
@@ -69,12 +69,12 @@ public class MemoryGameScene {
                 }
                 if (i < 3) {
 
-                    gameOverScene("Teenisid ühest voorust vähem kui 3 punkti.");
+                    gameOverScene("Teenisid ühest voorust vähem kui 3 punkti.", points, userName);
                 }
                 points += i;
                 memoryGameLabel.setText("Punktid: " + points);
                 memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
-                if (roundsLeftToPlay <= 0) gameOverScene("4 vooru on läbi.");
+                if (roundsLeftToPlay <= 0) gameOverScene("4 vooru on läbi.", points, userName);
             }
 
         });
@@ -227,8 +227,8 @@ public class MemoryGameScene {
         }
     }
 
-    public void gameOverScene(String failReason) {
-        EndScene endScene = new EndScene(failReason, points);
+    public void gameOverScene(String failReason, int points, String userName) {
+        EndScene endScene = new EndScene(failReason, points, userName);
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;

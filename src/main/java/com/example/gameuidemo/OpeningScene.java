@@ -47,8 +47,8 @@ public class OpeningScene {
         grid.add(hBoxForButton, 1, 7);
 
         matchingGameButton.setOnAction(event -> {
-            if (DifficultyCurrentState.getDifficultyLevel() != null) {
-                MatchingGameIntroScene matchingGameIntroScene = new MatchingGameIntroScene();
+            if (DifficultyCurrentState.getDifficultyLevel() != null && !userName.getText().isEmpty()) {
+                MatchingGameIntroScene matchingGameIntroScene = new MatchingGameIntroScene(userName.getText());
                 Window window = scene.getWindow();
                 if (window instanceof Stage) {
                     Stage stage = (Stage) window;
@@ -67,9 +67,9 @@ public class OpeningScene {
         grid.add(hBoxForButton2, 1, 8);
 
         memoryGameButton.setOnAction(event -> {
-            if (DifficultyCurrentState.getDifficultyLevel() != null) {
+            if (DifficultyCurrentState.getDifficultyLevel() != null && !userName.getText().isEmpty()) {
                 MemoryGameIntroScene memoryGameIntroScene = null;
-                memoryGameIntroScene = new MemoryGameIntroScene();
+                memoryGameIntroScene = new MemoryGameIntroScene(userName.getText());
                 Window window = scene.getWindow();
                 if (window instanceof Stage) {
                     Stage stage = (Stage) window;

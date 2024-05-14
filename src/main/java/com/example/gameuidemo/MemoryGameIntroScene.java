@@ -22,12 +22,12 @@ public class MemoryGameIntroScene {
     private GameButtons startGameButton;
 
 
-    public MemoryGameIntroScene() {
+    public MemoryGameIntroScene(String userName) {
         memoryIntroPane = new BaseGridPane();
         memoryIntroScene = new Scene(memoryIntroPane, 400, 350);
         matchingGameLabel();
         newGameIntroduction();
-        newStartGameButton();
+        newStartGameButton(userName);
     }
     private void matchingGameLabel(){
         matchingGameLabel = new Label("Mälumäng");
@@ -57,7 +57,7 @@ public class MemoryGameIntroScene {
         memoryIntroPane.add(vBox, 1, 4);
 
     }
-    private void newStartGameButton() throws RuntimeException {
+    private void newStartGameButton(String userName) throws RuntimeException {
         startGameButton = new GameButtons("Alusta mängu!", 130, 55, Color.BLACK);
         HBox hBox = new HBox(10);
         hBox.setAlignment(Pos.CENTER);
@@ -67,7 +67,7 @@ public class MemoryGameIntroScene {
         startGameButton.setOnAction(event -> {
             MemoryGameScene memoryGameScene = null;
             try {
-                memoryGameScene = new MemoryGameScene();
+                memoryGameScene = new MemoryGameScene(userName);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

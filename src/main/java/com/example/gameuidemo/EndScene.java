@@ -19,9 +19,11 @@ public class EndScene {
     private BaseGridPane endGrid;
     private Scene endScene;
 
-    public EndScene(String infoStr, int points) {
+    public EndScene(String infoStr, int points, String userName) {
         endGrid = new BaseGridPane();
         endScene = new Scene(endGrid, 400, 350);
+
+        System.out.println("userName = " + userName);
 
 
 

@@ -32,7 +32,7 @@ public class MatchingGameScene {
     private int points;
 
 
-    public MatchingGameScene(){
+    public MatchingGameScene(String userName){
         matchingGridPane = new BaseGridPane();
         matchingScene = new Scene(matchingGridPane, 400, 350);
         colorLabels = new ArrayList<>();
@@ -44,7 +44,7 @@ public class MatchingGameScene {
         newUserAnswerField();
         answerFeedback = new Text();
         roundsLeftToPlay = getRoundsFromDifficulty();
-        playRound();
+        playRound(userName);
 
     }
     private void matchingGameLabel(){
@@ -52,12 +52,12 @@ public class MatchingGameScene {
         matchingGameLabel2.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
         matchingGridPane.add(matchingGameLabel2, 0, 0, 2 , 1);
     }
-    private void playRound(){
+    private void playRound(String userName){
         if (roundsLeftToPlay > 0){
-            displayRandomColorNames();
+            displayRandomColorNames(userName);
             roundsLeftToPlay--;
         } else {
-            EndScene endScene = new EndScene("Katsete arv on otsas!", points); // põhjendus, miks mäng läbi sai
+            EndScene endScene = new EndScene("Katsete arv on otsas!", points, userName); // põhjendus, miks mäng läbi sai
             Window window = matchingScene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;
@@ -66,7 +66,7 @@ public class MatchingGameScene {
         }
     }
 
-    private void displayRandomColorNames(){
+    private void displayRandomColorNames(String userName){
         ColorsAndColorNames colorsAndColorNames = new ColorsAndColorNames();
         randomColors = colorsAndColorNames.getRandomColors();
         randomColorNames = colorsAndColorNames.getRandomColorNames();
@@ -95,7 +95,7 @@ public class MatchingGameScene {
                 }
 
                 userAnswerField.clear();
-                playRound();
+                playRound(userName);
 
             }
         });

@@ -22,12 +22,12 @@ public class MatchingGameIntroScene {
     private GameButtons startGameButton;
 
 
-    public MatchingGameIntroScene() {
+    public MatchingGameIntroScene(String userName) {
         matchingIntroGridPane = new BaseGridPane();
         matchingIntroScene = new Scene(matchingIntroGridPane, 400, 350);
         matchingGameLabel();
         newGameIntroduction();
-        newStartGameButton();
+        newStartGameButton(userName);
     }
     private void matchingGameLabel(){
         matchingGameLabel = new Label("Paaride sobitamise mäng");
@@ -53,7 +53,7 @@ public class MatchingGameIntroScene {
         matchingIntroGridPane.add(vBox, 1, 4);
 
     }
-    private void newStartGameButton(){
+    private void newStartGameButton(String userName){
         startGameButton = new GameButtons("Alusta mängu!", 130, 55, Color.BLACK);
         HBox hBox = new HBox(10);
         hBox.setAlignment(Pos.CENTER);
@@ -61,7 +61,7 @@ public class MatchingGameIntroScene {
         matchingIntroGridPane.add(hBox, 1, 6);
 
         startGameButton.setOnAction(event -> {
-            MatchingGameScene matchingGameScene = new MatchingGameScene();
+            MatchingGameScene matchingGameScene = new MatchingGameScene(userName);
             Window window = matchingIntroScene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;
