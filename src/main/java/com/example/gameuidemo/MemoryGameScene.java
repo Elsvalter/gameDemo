@@ -34,7 +34,7 @@ public class MemoryGameScene {
 
     public MemoryGameScene() throws InterruptedException {
         memoryGridPane = new BaseGridPane();
-        memoryScene = new Scene(memoryGridPane, 600, 600, Color.BLUEVIOLET);
+        memoryScene = new Scene(memoryGridPane, 600, 600);
 
         colorsAndNames = new ColorsAndColorNames();
         currentColors = new Color[6];
@@ -58,7 +58,7 @@ public class MemoryGameScene {
 
         submitButton.setOnMouseClicked(mouseEvent -> {
             if (roundsLeftToPlay <= 0) {
-                gameOverScene();
+                gameOverScene("4 vooru on läbi.");
             } else if (roundsLeftToPlay < 4) {
                 String input = memoryGameUserAnswerField.getText().trim();
                 String[] insertedColors = input.split(" ");
@@ -69,8 +69,7 @@ public class MemoryGameScene {
                 }
                 if (i < 3) {
 
-                    gameOverScene();
-                    System.out.println("stseen vahetatud1");
+                    gameOverScene("Teenisid ühest voorust vähem kui 3 punkti.");
                 }
                 points += i;
                 memoryGameLabel.setText("Punktid: " + points);
@@ -216,8 +215,6 @@ public class MemoryGameScene {
 
     public void showMemoryScene() { // algsele stseenile tagasi vahetamine
         // algse stseeni kuvamine
-        System.out.println("Stseeni vahetus");
-
         memoryGameUserAnswerField.setText("");
 
         Window window = popUpScene.getWindow();
@@ -227,8 +224,8 @@ public class MemoryGameScene {
         }
     }
 
-    public void gameOverScene() {
-        EndScene endScene = new EndScene("Teenisid ühest voorust vähem kui 3 punkti.");
+    public void gameOverScene(String failReason) {
+        EndScene endScene = new EndScene(failReason);
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;
