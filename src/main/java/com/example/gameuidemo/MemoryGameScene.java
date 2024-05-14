@@ -219,7 +219,7 @@ public class MemoryGameScene {
     }
 
     public void gameOverScene() {
-        EndScene endScene = new EndScene();
+        EndScene endScene = new EndScene("Teenisid ühest voorust vähem kui 3 punkti.");
         Window window = memoryScene.getWindow();
         if (window instanceof Stage){
             Stage stage = (Stage) window;

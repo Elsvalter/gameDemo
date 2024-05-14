@@ -19,18 +19,22 @@ public class EndScene {
     private BaseGridPane endGrid;
     private Scene endScene;
 
-    public EndScene() {
+    public EndScene(String infoStr) {
         endGrid = new BaseGridPane();
         endScene = new Scene(endGrid, 400, 350);
 
 
 
 
-        Label gameOverLabel = new Label("Mäng on läbi! Teenisid ühest voorust vähem kui 3 punkti.");
-        gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
+        Label gameOverLabel = new Label("Mäng on läbi!");
+        Label infoLabel = new Label(infoStr);
+        gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
+        infoLabel.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
+
         endGrid.add(gameOverLabel, 0, 0);
+        endGrid.add(infoLabel, 0, 1);
         Button buttonToHomePage = new GameButtons("Tagasi avalehele", 350, 55, Color.BLACK);
-        endGrid.add(buttonToHomePage, 0, 1);
+        endGrid.add(buttonToHomePage, 0, 2);
 
 
         buttonToHomePage.setOnMouseClicked(mouseEvent -> {
