@@ -63,7 +63,11 @@ public class MemoryGameScene {
             while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
                 i++;
             }
-            if (i < 3) gameOverScene();
+            if (i < 3) {
+
+                gameOverScene();
+                System.out.println("stseen vahetatud1");
+            }
 
             points += i;
             memoryGameLabel.setText("Punktid: " + points);
@@ -215,34 +219,12 @@ public class MemoryGameScene {
     }
 
     public void gameOverScene() {
-
-        GridPane gameOverPane = new BaseGridPane();
-        Scene gameOverScene = new Scene(gameOverPane, 600, 600);
-
-
+        EndScene endScene = new EndScene();
         Window window = memoryScene.getWindow();
-        if (window instanceof Stage) {
+        if (window instanceof Stage){
             Stage stage = (Stage) window;
-            stage.setScene(gameOverScene);
+            stage.setScene(endScene.getEndScene());
         }
-
-        Label gameOverLabel = new Label("Mäng on läbi! Teenisid ühest voorust vähem kui 3 punkti.");
-        gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
-        gameOverPane.add(gameOverLabel, 0, 0);
-        Button buttonToHomePage = new GameButtons("Tagasi avalehele", 350, 55, Color.BLACK);
-        gameOverPane.add(buttonToHomePage, 0, 1);
-
-
-        buttonToHomePage.setOnMouseClicked(mouseEvent -> {
-            OpeningScene openingScene = new OpeningScene();
-            Scene scene = openingScene.getOpeningScene();
-            Window root = memoryScene.getWindow();
-            if (window instanceof Stage) {
-                Stage stage = (Stage) root;
-                stage.setScene(scene);
-            }
-
-        });
 
     }
 
