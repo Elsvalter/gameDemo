@@ -27,7 +27,7 @@ public class EndScene {
 
 
         Label gameOverLabel = new Label("Mäng on läbi!");
-        Label infoLabel = new Label(infoStr);
+        Label infoLabel = new Label(infoStr + "\nTeenisite " + points + " punkti.");
         gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
         infoLabel.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
 
