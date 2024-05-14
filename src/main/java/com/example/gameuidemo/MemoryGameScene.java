@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
@@ -69,12 +70,22 @@ public class MemoryGameScene {
                 }
                 if (i < 3) {
 
-                    gameOverScene("Teenisid ühest voorust vähem kui 3 punkti.", points, userName);
+                    try {
+                        gameOverScene("Teenisid ühest voorust vähem kui 3 punkti.", points, userName);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
                 points += i;
                 memoryGameLabel.setText("Punktid: " + points);
                 memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
-                if (roundsLeftToPlay <= 0) gameOverScene("4 vooru on läbi.", points, userName);
+                if (roundsLeftToPlay <= 0) {
+                    try {
+                        gameOverScene("4 vooru on läbi.", points, userName);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
 
         });
@@ -227,8 +238,8 @@ public class MemoryGameScene {
         }
     }
 
-    public void gameOverScene(String failReason, int points, String userName) {
-        EndScene endScene = new EndScene(failReason, points, userName);
+    public void gameOverScene(String failReason, int points, String userName) throws IOException {
+        EndScene endScene = new EndScene(failReason, points, userName, false);
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;

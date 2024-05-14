@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class MatchingGameScene {
     private int points;
 
 
-    public MatchingGameScene(String userName){
+    public MatchingGameScene(String userName) throws IOException {
         matchingGridPane = new BaseGridPane();
         matchingScene = new Scene(matchingGridPane, 400, 350);
         colorLabels = new ArrayList<>();
@@ -52,12 +53,12 @@ public class MatchingGameScene {
         matchingGameLabel2.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
         matchingGridPane.add(matchingGameLabel2, 0, 0, 2 , 1);
     }
-    private void playRound(String userName){
+    private void playRound(String userName) throws IOException {
         if (roundsLeftToPlay > 0){
             displayRandomColorNames(userName);
             roundsLeftToPlay--;
         } else {
-            EndScene endScene = new EndScene("Katsete arv on otsas!", points, userName); // põhjendus, miks mäng läbi sai
+            EndScene endScene = new EndScene("Katsete arv on otsas!", points, userName, true);
             Window window = matchingScene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;
@@ -95,7 +96,11 @@ public class MatchingGameScene {
                 }
 
                 userAnswerField.clear();
-                playRound(userName);
+                try {
+                    playRound(userName);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
             }
         });

@@ -9,25 +9,42 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class EndScene {
 
-    // ma lihtsalt katsetasin mingit basic lõpu stseeni
-    // et vaadata seda üleminekut mängust siia
-    // selle sisu täitsa lamp hetkel, et saad sellega teha
-    // mida tahad
     private BaseGridPane endGrid;
     private Scene endScene;
 
-    public EndScene(String infoStr, int points, String userName) {
+    public EndScene(String infoStr, int points, String userName, boolean isMatchingGame) throws IOException {
         endGrid = new BaseGridPane();
         endScene = new Scene(endGrid, 400, 350);
 
-        System.out.println("userName = " + userName);
+        File file; // hoiab endas praegusele mängule vastavat File isendit
+        if (isMatchingGame) file = new File("matchingGame.dat");
+        else file = new File("memoryGame.dat");
 
+        Map<String, Integer> scoreMap;
+        if (file.exists() && file.length() != 0) {
+            scoreMap = readFile(file);
+            // kui mängijal on rohkem punkte, kui tema rekord
+            int highscore = scoreMap.getOrDefault(userName, 0);
 
+            if (points > highscore) {
+                scoreMap.put(userName, points);
+                writeToFile(scoreMap, file);
+            }
+        } else {
+            // kui .dat fail on tühi või selles ei ole midagi kirjas
+            scoreMap = new HashMap<>();
+            scoreMap.put(userName, points);
+            writeToFile(scoreMap, file);
+        }
 
-
+        System.out.println(scoreMap);
         Label gameOverLabel = new Label("Mäng on läbi!");
         Label infoLabel = new Label(infoStr + "\nTeenisite " + points + " punkti.");
         gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
@@ -49,6 +66,28 @@ public class EndScene {
             }
 
         });
+
+    }
+
+    private void writeToFile(Map<String, Integer> scoreMap, File file) throws IOException {
+        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(file))) {
+            dos.writeInt(scoreMap.size());
+            for (Map.Entry<String, Integer> entry : scoreMap.entrySet()) {
+                dos.writeUTF(entry.getKey());
+                dos.writeInt(entry.getValue());
+            }
+        }
+    }
+
+    private Map<String, Integer> readFile(File file) throws IOException {
+        Map<String, Integer> scoreMap = new HashMap<>();
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(file))) {
+            int differentUsers = dis.readInt();
+            for (int i = 0; i < differentUsers; i++) {
+                scoreMap.put(dis.readUTF(), dis.readInt());
+            }
+        }
+        return scoreMap;
     }
 
 

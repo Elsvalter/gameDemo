@@ -12,6 +12,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.io.IOException;
+
 public class MatchingGameIntroScene {
     private BaseGridPane matchingIntroGridPane;
     private Scene matchingIntroScene;
@@ -61,7 +63,12 @@ public class MatchingGameIntroScene {
         matchingIntroGridPane.add(hBox, 1, 6);
 
         startGameButton.setOnAction(event -> {
-            MatchingGameScene matchingGameScene = new MatchingGameScene(userName);
+            MatchingGameScene matchingGameScene = null;
+            try {
+                matchingGameScene = new MatchingGameScene(userName);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             Window window = matchingIntroScene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;
