@@ -25,12 +25,13 @@ public class MemoryGameScene {
     private Scene memoryScene;
     private TextField memoryGameUserAnswerField;
     private Label memoryGameLabel;
-    private GameButtons showButton;
-    private Scene popUpScene;
+    private GameButtons showButton; // näita värve nupp
+    private Scene popUpScene; // värvide ristkülikute stseen
     private ColorsAndColorNames colorsAndNames;
     private Color[] currentColors;
     private int points;
-    private int roundsLeftToPlay;
+    private int roundsLeftToPlay; // kasutaja saab 4 vooru mängida
+    private boolean answered; // näitab, kas kasutaja on antud voorus juba 1 korra värve pakkunud
 
     public MemoryGameScene() throws InterruptedException {
         memoryGridPane = new BaseGridPane();
@@ -57,9 +58,8 @@ public class MemoryGameScene {
         memoryGridPane.add(submitButton, 1, 2);
 
         submitButton.setOnMouseClicked(mouseEvent -> {
-            if (roundsLeftToPlay <= 0) {
-                gameOverScene("4 vooru on läbi.");
-            } else if (roundsLeftToPlay < 4) {
+            if (roundsLeftToPlay < 4 && !answered) {
+                answered = true;
                 String input = memoryGameUserAnswerField.getText().trim();
                 String[] insertedColors = input.split(" ");
                 System.out.println(Arrays.toString(insertedColors));
@@ -74,6 +74,7 @@ public class MemoryGameScene {
                 points += i;
                 memoryGameLabel.setText("Punktid: " + points);
                 memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
+                if (roundsLeftToPlay <= 0) gameOverScene("4 vooru on läbi.");
             }
 
         });
@@ -214,6 +215,8 @@ public class MemoryGameScene {
     }
 
     public void showMemoryScene() { // algsele stseenile tagasi vahetamine
+        answered = false; // kasutaja saab anda 1 vastuse iga vooru ajal
+
         // algse stseeni kuvamine
         memoryGameUserAnswerField.setText("");
 
