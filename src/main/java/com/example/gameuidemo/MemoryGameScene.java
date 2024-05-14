@@ -57,24 +57,26 @@ public class MemoryGameScene {
         memoryGridPane.add(submitButton, 1, 2);
 
         submitButton.setOnMouseClicked(mouseEvent -> {
-            String input = memoryGameUserAnswerField.getText().trim();
-            String[] insertedColors = input.split(" ");
-            System.out.println(Arrays.toString(insertedColors));
-            int i = 0;
-            while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
-                i++;
-            }
-            if (i < 3) {
-
+            if (roundsLeftToPlay <= 0) {
                 gameOverScene();
-                System.out.println("stseen vahetatud1");
-            } else if (roundsLeftToPlay-- <= 0) {
-                gameOverScene();
+            } else if (roundsLeftToPlay < 4) {
+                String input = memoryGameUserAnswerField.getText().trim();
+                String[] insertedColors = input.split(" ");
+                System.out.println(Arrays.toString(insertedColors));
+                int i = 0;
+                while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
+                    i++;
+                }
+                if (i < 3) {
+
+                    gameOverScene();
+                    System.out.println("stseen vahetatud1");
+                }
+                points += i;
+                memoryGameLabel.setText("Punktid: " + points);
+                memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
             }
 
-            points += i;
-            memoryGameLabel.setText("Punktid: " + points);
-            memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
         });
 
     }
@@ -172,7 +174,8 @@ public class MemoryGameScene {
 
     public void showColors(int timePeriod) throws InterruptedException {
 
-        // kui mängitakse esimest vooru, siis lisab memoryScenele juurde vastamise väljad
+        // iga värvide näitamisega vähendatakse järelejäänud voorude arvu 1 võrra
+        roundsLeftToPlay--;
 
 
         // uue stseeni loomine ja selle esiletõstmine lavale
@@ -227,7 +230,7 @@ public class MemoryGameScene {
     public void gameOverScene() {
         EndScene endScene = new EndScene("Teenisid ühest voorust vähem kui 3 punkti.");
         Window window = memoryScene.getWindow();
-        if (window instanceof Stage){
+        if (window instanceof Stage) {
             Stage stage = (Stage) window;
             stage.setScene(endScene.getEndScene());
         }
