@@ -40,7 +40,11 @@ public class MemoryGameIntroScene {
         Text difficultyText = new Text("Valitud raskustase: "+difficulty);
         difficultyText.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
 
-        gameIntroduction = new Text("");
+        gameIntroduction = new Text("Mängu alustades kuvatakse ekraanile värvid, mida peab\n" +
+                "õiges järjekorras meelde jätma.\n" +
+                "Värvide järjekord on oluline, sest kui eksida värvide\n" +
+                "sisestamisel järjekorraga, siis ei saa vales järjekorras\n" +
+                "olevate värvide eest punkte.");
         gameIntroduction.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
         Label correctExample = new Label("Roosa");
         correctExample.setTextFill(Color.PINK);
