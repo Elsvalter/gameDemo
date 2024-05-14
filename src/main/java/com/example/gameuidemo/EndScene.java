@@ -10,8 +10,11 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class EndScene {
@@ -21,7 +24,7 @@ public class EndScene {
 
     public EndScene(String infoStr, int points, String userName, boolean isMatchingGame) throws IOException {
         endGrid = new BaseGridPane();
-        endScene = new Scene(endGrid, 400, 350);
+        endScene = new Scene(endGrid, 550, 700);
 
         File file; // hoiab endas praegusele mängule vastavat File isendit
         if (isMatchingGame) file = new File("matchingGame.dat");
@@ -44,9 +47,9 @@ public class EndScene {
             writeToFile(scoreMap, file);
         }
 
-        System.out.println(scoreMap);
+        // pealkirjad ja mängu lõppemise põhjus
         Label gameOverLabel = new Label("Mäng on läbi!");
-        Label infoLabel = new Label(infoStr + "\nTeenisite " + points + " punkti.");
+        Label infoLabel = new Label(infoStr + "\nTeenisite kokku " + points + " punkti.");
         gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
         infoLabel.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
 
@@ -66,6 +69,27 @@ public class EndScene {
             }
 
         });
+
+
+        // edetabel
+        Label leaderBoard = new Label("Edetabel");
+        leaderBoard.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
+        endGrid.add(leaderBoard, 0, 3);
+
+        // scoreMap sorteerimine väärtuste põhjal
+        List<String> keys = new ArrayList<>();
+        List<Integer> values = new ArrayList<>();
+        scoreMap.entrySet().stream().sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).
+                forEach(k -> {
+                    keys.add(k.getKey());
+                    values.add(k.getValue());
+                });
+
+        // edetabeli kuvamine
+        for (int i = 0; i < keys.size(); i++) {
+            Label player = new Label((i + 1) + ". " + keys.get(i) + " - " + values.get(i));
+            endGrid.add(player, 0, i + 4);
+        }
 
     }
 

@@ -71,7 +71,7 @@ public class MemoryGameScene {
                 if (i < 3) {
 
                     try {
-                        gameOverScene("Teenisid ühest voorust vähem kui 3 punkti.", points, userName);
+                        gameOverScene("Teenisite ühest voorust vähem kui 3 punkti.", points, userName);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
