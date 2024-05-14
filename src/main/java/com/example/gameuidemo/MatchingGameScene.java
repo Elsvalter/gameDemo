@@ -57,7 +57,7 @@ public class MatchingGameScene {
             displayRandomColorNames();
             roundsLeftToPlay--;
         } else {
-            EndScene endScene = new EndScene("Katsete arv on otsas!"); // põhjendus, miks mäng läbi sai
+            EndScene endScene = new EndScene("Katsete arv on otsas!", points); // põhjendus, miks mäng läbi sai
             Window window = matchingScene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;

@@ -19,7 +19,7 @@ public class EndScene {
     private BaseGridPane endGrid;
     private Scene endScene;
 
-    public EndScene(String infoStr) {
+    public EndScene(String infoStr, int points) {
         endGrid = new BaseGridPane();
         endScene = new Scene(endGrid, 400, 350);
 

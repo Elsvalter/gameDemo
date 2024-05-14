@@ -228,7 +228,7 @@ public class MemoryGameScene {
     }
 
     public void gameOverScene(String failReason) {
-        EndScene endScene = new EndScene(failReason);
+        EndScene endScene = new EndScene(failReason, points);
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;
