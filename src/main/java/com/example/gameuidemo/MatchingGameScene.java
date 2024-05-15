@@ -61,7 +61,16 @@ public class MatchingGameScene {
             displayRandomColorNames(userName);
             roundsLeftToPlay--;
         } else {
-            EndScene endScene = new EndScene("Katsete arv on otsas!", points, userName, true);
+            int multiplier = 1;
+            switch (DifficultyCurrentState.getDifficultyLevel()) {
+                case "Keskmine":
+                    multiplier *= 2;
+                    break;
+                case "Raske":
+                    multiplier *= 3;
+                    break;
+            }
+            EndScene endScene = new EndScene("Katsete arv on otsas!", points, multiplier, userName, true);
             Window window = matchingScene.getWindow();
             if (window instanceof Stage){
                 Stage stage = (Stage) window;

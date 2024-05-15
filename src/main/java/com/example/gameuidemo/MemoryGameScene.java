@@ -246,7 +246,16 @@ public class MemoryGameScene {
     }
 
     public void gameOverScene(String failReason, int points, String userName) throws IOException {
-        EndScene endScene = new EndScene(failReason, points, userName, false);
+        int multiplier = 1;
+        switch (DifficultyCurrentState.getDifficultyLevel()) {
+            case "Keskmine":
+                multiplier *= 2;
+                break;
+            case "Raske":
+                multiplier *= 3;
+                break;
+        }
+        EndScene endScene = new EndScene(failReason, points, multiplier, userName, false);
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;
