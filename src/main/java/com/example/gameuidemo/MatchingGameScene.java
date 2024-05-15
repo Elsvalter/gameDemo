@@ -36,9 +36,9 @@ public class MatchingGameScene {
     public MatchingGameScene(String userName) throws IOException {
         matchingGridPane = new BaseGridPane();
         matchingScene = new Scene(matchingGridPane, 600, 650);
-        colorLabels = new ArrayList<>();
+        colorLabels = new ArrayList<>(); // loob Labelite Listi
         for (int i = 0; i < 4; i++) {
-            colorLabels.add(new Label());
+            colorLabels.add(new Label()); // Loob 4 uut Labelit ja lisab Listi
         }
         points = 0;
         matchingGameLabel();
@@ -71,6 +71,7 @@ public class MatchingGameScene {
     }
 
     private void displayRandomColorNames(String userName){
+        // tekitab juhuslike värvide ja sõnade massiivid
         ColorsAndColorNames colorsAndColorNames = new ColorsAndColorNames();
         randomColors = colorsAndColorNames.getRandomColors();
         randomColorNames = colorsAndColorNames.getRandomColorNames();
@@ -100,9 +101,9 @@ public class MatchingGameScene {
                     answerFeedback.setText("Vale vastus. Õige vastus: " + randomColorNames[colorsAndColorNames.getCorrectAnswerIndex()]);
                 }
 
-                userAnswerField.clear();
+                userAnswerField.clear(); // kustutab kasutaja eelmise sisestuse
                 try {
-                    playRound(userName);
+                    playRound(userName); // järgmine round
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
