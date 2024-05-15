@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class EndScene {
@@ -79,10 +78,11 @@ public class EndScene {
         // scoreMap sorteerimine väärtuste põhjal
         List<String> keys = new ArrayList<>();
         List<Integer> values = new ArrayList<>();
-        scoreMap.entrySet().stream().sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).
+        scoreMap.entrySet().stream().sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).takeWhile(k -> keys.size() < 10).
                 forEach(k -> {
                     keys.add(k.getKey());
                     values.add(k.getValue());
+                    //if (keys.size() == 10) break;
                 });
 
         // edetabeli kuvamine
