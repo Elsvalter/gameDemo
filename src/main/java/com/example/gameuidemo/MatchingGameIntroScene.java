@@ -26,7 +26,7 @@ public class MatchingGameIntroScene {
 
     public MatchingGameIntroScene(String userName) {
         matchingIntroGridPane = new BaseGridPane();
-        matchingIntroScene = new Scene(matchingIntroGridPane, 400, 350);
+        matchingIntroScene = new Scene(matchingIntroGridPane, 600, 650);
         matchingGameLabel();
         newGameIntroduction();
         newStartGameButton(userName);
@@ -44,7 +44,7 @@ public class MatchingGameIntroScene {
 
         gameIntroduction = new Text("Vali esitatud sõnade seast see,\nkus sõna ja värv sobivad kokku!\n\nNäiteks nii: ");
         gameIntroduction.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
-        Label correctExample = new Label("Roosa");
+        Label correctExample = new Label("Roosa"); // näide õigest vastusest
         correctExample.setTextFill(Color.PINK);
         correctExample.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
 
@@ -56,12 +56,14 @@ public class MatchingGameIntroScene {
 
     }
     private void newStartGameButton(String userName){
+        // nupp mängu alustamiseks
         startGameButton = new GameButtons("Alusta mängu!", 130, 55, Color.BLACK);
         HBox hBox = new HBox(10);
         hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().add(startGameButton);
         matchingIntroGridPane.add(hBox, 1, 6);
 
+        // nupule vajutamisel püüab avada MatchingGameScene'i, kus toimub mäng
         startGameButton.setOnAction(event -> {
             MatchingGameScene matchingGameScene = null;
             try {

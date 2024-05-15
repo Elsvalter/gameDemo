@@ -35,10 +35,10 @@ public class MatchingGameScene {
 
     public MatchingGameScene(String userName) throws IOException {
         matchingGridPane = new BaseGridPane();
-        matchingScene = new Scene(matchingGridPane, 400, 350);
-        colorLabels = new ArrayList<>();
+        matchingScene = new Scene(matchingGridPane, 600, 650);
+        colorLabels = new ArrayList<>(); // loob Labelite Listi
         for (int i = 0; i < 4; i++) {
-            colorLabels.add(new Label());
+            colorLabels.add(new Label()); // Loob 4 uut Labelit ja lisab Listi
         }
         points = 0;
         matchingGameLabel();
@@ -53,6 +53,9 @@ public class MatchingGameScene {
         matchingGameLabel2.setFont(Font.font("Calibri", FontWeight.BOLD, 22));
         matchingGridPane.add(matchingGameLabel2, 0, 0, 2 , 1);
     }
+
+    // kui on veel rounde mängida, siis kuvab uued värvid
+    // kui roundid otsas siis viib EndScene'i
     private void playRound(String userName) throws IOException {
         if (roundsLeftToPlay > 0){
             displayRandomColorNames(userName);
@@ -68,6 +71,7 @@ public class MatchingGameScene {
     }
 
     private void displayRandomColorNames(String userName){
+        // tekitab juhuslike värvide ja sõnade massiivid
         ColorsAndColorNames colorsAndColorNames = new ColorsAndColorNames();
         randomColors = colorsAndColorNames.getRandomColors();
         randomColorNames = colorsAndColorNames.getRandomColorNames();
@@ -76,6 +80,8 @@ public class MatchingGameScene {
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().add(answerFeedback);
 
+        // Set'ib Labelite tekstid ja värvid vastavalt juhuslikele värvidele (randomColors)
+        // ja nimedele (randomColorNames)
         for (int x = 0; x < colorLabels.size(); x++) {
             colorLabels.get(x).setFont(Font.font(20));
             colorLabels.get(x).setText(randomColorNames[x]);
@@ -83,7 +89,7 @@ public class MatchingGameScene {
             vBox.getChildren().add(colorLabels.get(x));
         }
 
-
+// kui kasutaja kirjutab vastuse ja vajutab enter --> kontrollib kas vastus õige + lisab punkti
         userAnswerField.setOnKeyPressed(keyEvent -> {
             if (keyEvent.getCode() == KeyCode.ENTER){
                 String userAnswer = userAnswerField.getText().toLowerCase();
@@ -95,9 +101,9 @@ public class MatchingGameScene {
                     answerFeedback.setText("Vale vastus. Õige vastus: " + randomColorNames[colorsAndColorNames.getCorrectAnswerIndex()]);
                 }
 
-                userAnswerField.clear();
+                userAnswerField.clear(); // kustutab kasutaja eelmise sisestuse
                 try {
-                    playRound(userName);
+                    playRound(userName); // järgmine round
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -107,7 +113,7 @@ public class MatchingGameScene {
         matchingGridPane.add(vBox, 1, 3);
     }
 
-
+    // tagastab mängu roundide arvu vastavalt valitud raskustasemele
     private int getRoundsFromDifficulty(){
         String difficulty = DifficultyCurrentState.getDifficultyLevel();
         if (difficulty.equals("Lihtne")){

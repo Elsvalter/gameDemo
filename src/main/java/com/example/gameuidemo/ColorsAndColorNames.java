@@ -10,6 +10,7 @@ public class ColorsAndColorNames {
     private Random random;
     private int correctAnswerIndex;
     private String[] randomColorNames;
+    private Color[] randomColors;
 
     public ColorsAndColorNames() {
         colorNames = List.of(new String[]{"Punane", "Sinine", "Roheline", "Kollane", "Oranž", "Lilla", "Roosa", "Pruun", "Must"});
@@ -17,14 +18,17 @@ public class ColorsAndColorNames {
         random = new Random();
         setCorrectAnswerIndex();
         setRandomColorNames();
+        setRandomColors();
 
     }
 
-
+    // loob juhuslike värvinimedega sõnemassiivi
     public void setRandomColorNames() {
         String[] randomWords = new String[4];
+        // paneb õige vastuse indeksile suvalise värvi sõna
         randomWords[correctAnswerIndex] = colorNames.get(random.nextInt(colorNames.size()));
 
+        // täidab ülejäänud värvid suvaliselt
         for (int i = 0; i < randomWords.length; i++) {
             if (i != correctAnswerIndex) {
                 randomWords[i] = colorNames.get(random.nextInt(colorNames.size()));
@@ -37,18 +41,26 @@ public class ColorsAndColorNames {
         return randomColorNames;
     }
 
-    public Color[] getRandomColors() {
-        Color[] randomColors = new Color[4];
-        randomColors[correctAnswerIndex] = getColorByName(randomColorNames[correctAnswerIndex]);
+   // loob juhuslike värvidega Color massiivi
+    public void setRandomColors() {
+        Color[] randColors = new Color[4];
+        // paneb õige vastuse indeksi kohale õige värvi vastavalt sõnale, mis sellel indeksil juba on
+        randColors[correctAnswerIndex] = getColorByName(randomColorNames[correctAnswerIndex]);
 
-        for (int i = 0; i < randomColors.length; i++) {
+        // täidab ülejäänud värvid suvaliselt
+        for (int i = 0; i < randColors.length; i++) {
             if (i != correctAnswerIndex) {
-                randomColors[i] = colors.get(random.nextInt(colors.size()));
+                randColors[i] = colors.get(random.nextInt(colors.size()));
             }
         }
+        randomColors = randColors;
+    }
+
+    public Color[] getRandomColors() {
         return randomColors;
     }
 
+    // tagastab Color tüüpi objekti värvi nime järgi
     public Color getColorByName(String colorName) {
         int index = colorNames.indexOf(colorName);
         if (index != -1) {
@@ -56,6 +68,7 @@ public class ColorsAndColorNames {
         } else return null;
     }
 
+    // setib ühe suvalise indeksi õigeks vastuseks
     private void setCorrectAnswerIndex(){
         correctAnswerIndex = random.nextInt(4);
     }

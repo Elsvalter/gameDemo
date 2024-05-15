@@ -24,7 +24,7 @@ public class MemoryGameIntroScene {
 
     public MemoryGameIntroScene(String userName) {
         memoryIntroPane = new BaseGridPane();
-        memoryIntroScene = new Scene(memoryIntroPane, 400, 350);
+        memoryIntroScene = new Scene(memoryIntroPane, 600, 650);
         matchingGameLabel();
         newGameIntroduction();
         newStartGameButton(userName);
@@ -46,14 +46,10 @@ public class MemoryGameIntroScene {
                 "sisestamisel järjekorraga, siis ei saa vales järjekorras\n" +
                 "olevate värvide eest punkte.");
         gameIntroduction.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
-        Label correctExample = new Label("Roosa");
-        correctExample.setTextFill(Color.PINK);
-        correctExample.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-
 
         VBox vBox = new VBox(10);
         vBox.setAlignment(Pos.CENTER);
-        vBox.getChildren().addAll(difficultyText, gameIntroduction, correctExample);
+        vBox.getChildren().addAll(difficultyText, gameIntroduction);
         memoryIntroPane.add(vBox, 1, 4);
 
     }

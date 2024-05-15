@@ -28,7 +28,7 @@ public class OpeningScene {
 
     public OpeningScene() {
         grid = new BaseGridPane();
-        scene = new Scene(grid, 400, 350);
+        scene = new Scene(grid, 600, 650);
         difficulty = new DifficultyCurrentState(); // loob uue raskustaseme isendi
         welcomeLabel();
         userNameTextField();
