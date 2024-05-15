@@ -69,6 +69,7 @@ public class MemoryGameScene {
                 while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
                     i++;
                 }
+                points += i;
                 if (i < 3) {
 
                     try {
@@ -77,7 +78,6 @@ public class MemoryGameScene {
                         throw new RuntimeException(e);
                     }
                 }
-                points += i;
                 memoryGameLabel.setText("Punktid: " + points);
                 memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
                 if (roundsLeftToPlay <= 0) {
