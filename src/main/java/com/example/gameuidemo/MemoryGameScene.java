@@ -36,7 +36,7 @@ public class MemoryGameScene {
 
     public MemoryGameScene(String userName) throws InterruptedException {
         memoryGridPane = new BaseGridPane();
-        memoryScene = new Scene(memoryGridPane, 600, 600);
+        memoryScene = new Scene(memoryGridPane, 600, 650);
 
         colorsAndNames = new ColorsAndColorNames();
         currentColors = new Color[6];
@@ -191,7 +191,7 @@ public class MemoryGameScene {
 
         // uue stseeni loomine ja selle esiletõstmine lavale
         GridPane popUpPane = new BaseGridPane();
-        popUpScene = new Scene(popUpPane, 600, 600);
+        popUpScene = new Scene(popUpPane, 600, 650);
         addColors(popUpPane);
 
         Window window = memoryScene.getWindow();

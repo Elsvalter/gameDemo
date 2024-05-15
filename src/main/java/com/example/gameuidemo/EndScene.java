@@ -1,5 +1,6 @@
 package com.example.gameuidemo;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +25,7 @@ public class EndScene {
 
     public EndScene(String infoStr, int points, String userName, boolean isMatchingGame) throws IOException {
         endGrid = new BaseGridPane();
-        endScene = new Scene(endGrid, 550, 700);
+        endScene = new Scene(endGrid, 600, 650);
 
         File file; // hoiab endas praegusele mängule vastavat File isendit
         if (isMatchingGame) file = new File("matchingGame.dat");
@@ -53,10 +54,10 @@ public class EndScene {
         gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
         infoLabel.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
 
-        endGrid.add(gameOverLabel, 0, 0);
-        endGrid.add(infoLabel, 0, 1);
+        endGrid.add(gameOverLabel, 2, 0);
+        endGrid.add(infoLabel, 2, 1);
         Button buttonToHomePage = new GameButtons("Tagasi avalehele", 350, 55, Color.BLACK);
-        endGrid.add(buttonToHomePage, 0, 2);
+        endGrid.add(buttonToHomePage, 2, 2);
 
 
         buttonToHomePage.setOnMouseClicked(mouseEvent -> {
@@ -74,7 +75,7 @@ public class EndScene {
         // edetabel
         Label leaderBoard = new Label("Edetabel");
         leaderBoard.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-        endGrid.add(leaderBoard, 0, 3);
+        endGrid.add(leaderBoard, 2, 3);
 
         // scoreMap sorteerimine väärtuste põhjal
         List<String> keys = new ArrayList<>();
@@ -88,7 +89,7 @@ public class EndScene {
         // edetabeli kuvamine
         for (int i = 0; i < keys.size(); i++) {
             Label player = new Label((i + 1) + ". " + keys.get(i) + " - " + values.get(i));
-            endGrid.add(player, 0, i + 4);
+            endGrid.add(player, 2, i + 4);
         }
 
     }

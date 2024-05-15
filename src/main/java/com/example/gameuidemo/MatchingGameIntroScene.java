@@ -26,7 +26,7 @@ public class MatchingGameIntroScene {
 
     public MatchingGameIntroScene(String userName) {
         matchingIntroGridPane = new BaseGridPane();
-        matchingIntroScene = new Scene(matchingIntroGridPane, 400, 350);
+        matchingIntroScene = new Scene(matchingIntroGridPane, 600, 650);
         matchingGameLabel();
         newGameIntroduction();
         newStartGameButton(userName);
