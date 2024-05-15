@@ -39,10 +39,11 @@ public class MemoryGameScene {
         memoryScene = new Scene(memoryGridPane, 600, 600);
 
         colorsAndNames = new ColorsAndColorNames();
-        currentColors = new Color[6];
+        currentColors = new Color[12];
 
         points = 0;
         roundsLeftToPlay = 4;
+        answered = true;
 
         matchingGameLabel();
         newMemoryGameUserAnswerField(userName);
@@ -166,13 +167,16 @@ public class MemoryGameScene {
         // näitab korraks värve - vastavalt valitud raskusastmele
         int finalTimePeriod = timePeriod;
         showButton.setOnAction(actionEvent -> {
-
-            // kirjutab stseni värvidega üle
-            try {
-                showColors(finalTimePeriod); // värvide näitamise ajaperiood sõltub raskustasemest
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            // kui kasutaja ei ole vastanud, siis ei saa nuppu vajutada
+            if (answered) {
+                try {
+                    // kirjutab stseni värvidega üle
+                    showColors(finalTimePeriod); // värvide näitamise ajaperiood sõltub raskustasemest
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
         });
 
     }
@@ -217,7 +221,8 @@ public class MemoryGameScene {
     private void addColors(GridPane popUpPane) {
         // saab juhuslikult valitud värvid colorsAndNames isendilt
         System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 0, 4);
-        System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 4, 2);
+        System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 4, 4);
+        System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 8, 4);
 
         int i = 0;
         for (Color color : currentColors) { // värvid kuvatakse ristkülikutena ekraanile
