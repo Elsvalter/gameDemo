@@ -221,6 +221,7 @@ public class MemoryGameScene {
     private void addColors(GridPane popUpPane) {
         // saab juhuslikult valitud värvid colorsAndNames isendilt
         for (int i = 0; i < 3; i++) {
+            colorsAndNames.setRandomColorNames();
             colorsAndNames.setRandomColors();
             System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 4 * i, 4);
         }
