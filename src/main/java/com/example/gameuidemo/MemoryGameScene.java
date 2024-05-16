@@ -59,19 +59,24 @@ public class MemoryGameScene {
         Button submitButton = new Button("Vasta");
         memoryGridPane.add(submitButton, 1, 2);
 
-        submitButton.setOnMouseClicked(mouseEvent -> {
+        submitButton.setOnMouseClicked(mouseEvent -> { // "vasta" nupu funktsioon
             if (roundsLeftToPlay < 4 && !answered) {
+                // voorude arv ei ole läbi
+                // kasutaja ei ole veel vastanud
                 answered = true;
                 String input = memoryGameUserAnswerField.getText().trim();
                 String[] insertedColors = input.split(" ");
                 System.out.println(Arrays.toString(insertedColors));
+
+                // kontrollib, kui palju värve täppi pandi ja lisab vastavalt punkte
                 int i = 0;
                 while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
                     i++;
                 }
                 points += i;
-                if (i < 3) {
 
+                // vähem kui 3 värvi ära arvamine kukutab kasutaja mängust läbi
+                if (i < 3) {
                     try {
                         gameOverScene("Teenisite ühest voorust vähem kui 3 punkti.", points, userName);
                     } catch (IOException e) {
@@ -157,10 +162,6 @@ public class MemoryGameScene {
             case "Raske":
                 timePeriod = 4;
                 break;
-            default: // kui raskusastmeks on null
-                System.exit(1); // TODO: null raskusastet ei tohiks saada sisestada
-                break;
-
         }
 
 
