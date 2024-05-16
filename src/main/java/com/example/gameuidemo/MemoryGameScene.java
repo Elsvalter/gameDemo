@@ -39,10 +39,11 @@ public class MemoryGameScene {
         memoryScene = new Scene(memoryGridPane, 600, 650);
 
         colorsAndNames = new ColorsAndColorNames();
-        currentColors = new Color[6];
+        currentColors = new Color[12];
 
         points = 0;
         roundsLeftToPlay = 4;
+        answered = true;
 
         matchingGameLabel();
         newMemoryGameUserAnswerField(userName);
@@ -68,6 +69,7 @@ public class MemoryGameScene {
                 while (i < currentColors.length && i < insertedColors.length && colorsAndNames.getColorByName(insertedColors[i]) == currentColors[i]) {
                     i++;
                 }
+                points += i;
                 if (i < 3) {
 
                     try {
@@ -76,7 +78,6 @@ public class MemoryGameScene {
                         throw new RuntimeException(e);
                     }
                 }
-                points += i;
                 memoryGameLabel.setText("Punktid: " + points);
                 memoryGameUserAnswerField.setText("Vastatud! Teenisite " + i + " punkti.");
                 if (roundsLeftToPlay <= 0) {
@@ -166,13 +167,16 @@ public class MemoryGameScene {
         // näitab korraks värve - vastavalt valitud raskusastmele
         int finalTimePeriod = timePeriod;
         showButton.setOnAction(actionEvent -> {
-
-            // kirjutab stseni värvidega üle
-            try {
-                showColors(finalTimePeriod); // värvide näitamise ajaperiood sõltub raskustasemest
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            // kui kasutaja ei ole vastanud, siis ei saa nuppu vajutada
+            if (answered) {
+                try {
+                    // kirjutab stseni värvidega üle
+                    showColors(finalTimePeriod); // värvide näitamise ajaperiood sõltub raskustasemest
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
         });
 
     }
@@ -216,8 +220,11 @@ public class MemoryGameScene {
 
     private void addColors(GridPane popUpPane) {
         // saab juhuslikult valitud värvid colorsAndNames isendilt
-        System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 0, 4);
-        System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 4, 2);
+        for (int i = 0; i < 3; i++) {
+            colorsAndNames.setRandomColorNames();
+            colorsAndNames.setRandomColors();
+            System.arraycopy(colorsAndNames.getRandomColors(), 0, currentColors, 4 * i, 4);
+        }
 
         int i = 0;
         for (Color color : currentColors) { // värvid kuvatakse ristkülikutena ekraanile
@@ -239,7 +246,16 @@ public class MemoryGameScene {
     }
 
     public void gameOverScene(String failReason, int points, String userName) throws IOException {
-        EndScene endScene = new EndScene(failReason, points, userName, false);
+        int multiplier = 1;
+        switch (DifficultyCurrentState.getDifficultyLevel()) {
+            case "Keskmine":
+                multiplier *= 2;
+                break;
+            case "Raske":
+                multiplier *= 3;
+                break;
+        }
+        EndScene endScene = new EndScene(failReason, points, multiplier, userName, false);
         Window window = memoryScene.getWindow();
         if (window instanceof Stage) {
             Stage stage = (Stage) window;

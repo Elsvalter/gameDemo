@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class EndScene {
@@ -23,9 +22,23 @@ public class EndScene {
     private BaseGridPane endGrid;
     private Scene endScene;
 
-    public EndScene(String infoStr, int points, String userName, boolean isMatchingGame) throws IOException {
+    public EndScene(String infoStr, int points, int difficultyMultiplier, String userName, boolean isMatchingGame) throws IOException {
         endGrid = new BaseGridPane();
         endScene = new Scene(endGrid, 600, 650);
+
+        // pealkirjad ja mängu lõppemise põhjus
+        Label gameOverLabel = new Label("Mäng on läbi!");
+        Label infoLabel = new Label(infoStr + "\nTeenisite kokku "
+                + points + " x " + difficultyMultiplier + " = " + points * difficultyMultiplier
+                + " punkti.");
+        points *= difficultyMultiplier;
+        gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
+        infoLabel.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
+
+        endGrid.add(gameOverLabel, 2, 0);
+        endGrid.add(infoLabel, 2, 1);
+        Button buttonToHomePage = new GameButtons("Tagasi avalehele", 350, 55, Color.BLACK);
+        endGrid.add(buttonToHomePage, 2, 2);
 
         File file; // hoiab endas praegusele mängule vastavat File isendit
         if (isMatchingGame) file = new File("matchingGame.dat");
@@ -48,16 +61,6 @@ public class EndScene {
             writeToFile(scoreMap, file);
         }
 
-        // pealkirjad ja mängu lõppemise põhjus
-        Label gameOverLabel = new Label("Mäng on läbi!");
-        Label infoLabel = new Label(infoStr + "\nTeenisite kokku " + points + " punkti.");
-        gameOverLabel.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-        infoLabel.setFont(Font.font("Calibri", FontWeight.NORMAL, 14));
-
-        endGrid.add(gameOverLabel, 2, 0);
-        endGrid.add(infoLabel, 2, 1);
-        Button buttonToHomePage = new GameButtons("Tagasi avalehele", 350, 55, Color.BLACK);
-        endGrid.add(buttonToHomePage, 2, 2);
 
 
         buttonToHomePage.setOnMouseClicked(mouseEvent -> {
@@ -80,10 +83,11 @@ public class EndScene {
         // scoreMap sorteerimine väärtuste põhjal
         List<String> keys = new ArrayList<>();
         List<Integer> values = new ArrayList<>();
-        scoreMap.entrySet().stream().sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).
+        scoreMap.entrySet().stream().sorted((k1, k2) -> -k1.getValue().compareTo(k2.getValue())).takeWhile(k -> keys.size() < 10).
                 forEach(k -> {
                     keys.add(k.getKey());
                     values.add(k.getValue());
+                    //if (keys.size() == 10) break;
                 });
 
         // edetabeli kuvamine
