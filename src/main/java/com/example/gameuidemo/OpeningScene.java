@@ -54,6 +54,11 @@ public class OpeningScene {
                     Stage stage = (Stage) window;
                     stage.setScene(matchingGameIntroScene.getMatchingIntroScene());
                 }
+            } else {
+                // täida kõikv väljad hoiatus
+                Label warning = new Label("Täida kõik väljad!");
+                warning.setTextFill(Color.RED);
+                grid.add(warning, 1, 9);
             }
         });
     }
@@ -75,6 +80,11 @@ public class OpeningScene {
                     Stage stage = (Stage) window;
                     stage.setScene(memoryGameIntroScene.getMemoryIntroScene());
                 }
+            } else {
+                // täida kõikv väljad hoiatus
+                Label warning = new Label("Täida kõik väljad!");
+                warning.setTextFill(Color.RED);
+                grid.add(warning, 1, 9);
             }
         });
     }
