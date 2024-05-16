@@ -25,14 +25,9 @@ public class ColorsAndColorNames {
     // loob juhuslike värvinimedega sõnemassiivi
     public void setRandomColorNames() {
         String[] randomWords = new String[4];
-        // paneb õige vastuse indeksile suvalise värvi sõna
-        randomWords[correctAnswerIndex] = colorNames.get(random.nextInt(colorNames.size()));
-
-        // täidab ülejäänud värvid suvaliselt
+        // täidab massiivi suvaliste värvinimedega
         for (int i = 0; i < randomWords.length; i++) {
-            if (i != correctAnswerIndex) {
-                randomWords[i] = colorNames.get(random.nextInt(colorNames.size()));
-            }
+            randomWords[i] = colorNames.get(random.nextInt(colorNames.size()));
         }
         randomColorNames = randomWords;
     }
