@@ -66,7 +66,6 @@ public class MemoryGameScene {
                 answered = true;
                 String input = memoryGameUserAnswerField.getText().trim();
                 String[] insertedColors = input.split(" ");
-                System.out.println(Arrays.toString(insertedColors));
 
                 // kontrollib, kui palju värve täppi pandi ja lisab vastavalt punkte
                 int i = 0;

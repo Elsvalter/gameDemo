@@ -18,6 +18,6 @@ public class MemoryGameTimer extends TimerTask {
                 obj.notify();
             }
         }
-        System.out.println(timePeriod--);
+        timePeriod--;
     }
 }
