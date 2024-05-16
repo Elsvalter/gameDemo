@@ -126,10 +126,10 @@ public class MatchingGameScene {
     private int getRoundsFromDifficulty(){
         String difficulty = DifficultyCurrentState.getDifficultyLevel();
         if (difficulty.equals("Lihtne")){
-            return 4;
+            return 12;
         } else if (difficulty.equals("Keskmine")) {
             return 8;
-        }else return 12;
+        }else return 4;
     }
     private void newUserAnswerField() {
         userAnswerField = new TextField();
